@@ -4,7 +4,9 @@ const MainLayout = () => {
     return (
         <div>
             <Navbar/>
-            <Outlet/>
+           <div className='px-10 py-20'>
+           <Outlet/>
+           </div>
         </div>
     );
 };
