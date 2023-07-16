@@ -1,20 +1,32 @@
+import { toast } from "react-hot-toast/headless";
 import { useAddReviewMutation } from "../redux/api/apiSlice";
 
 const PostReview = ({ id }) => {
+  console.log("id from ", id);
 
-  console.log("id from <post></post>:", id)
-
-  const [addReview, { isSuccess, error }] = useAddReviewMutation(id);
+  const [addReview, { isSuccess, error }] = useAddReviewMutation();
 
   const handleReview = async (event) => {
     event.preventDefault();
 
     const review = event.target.reviewInput.value;
+    const options = {
+      id: id,
+      data: { review },
+    };
 
-    console.log("review:", review);
-
-    await addReview({ review });
+    await addReview(options);
   };
+
+  if (error) {
+    console.log(error?.data.message);
+  }
+
+  if (isSuccess) {
+    console.log("isSuccess:", isSuccess);
+
+    toast("Review added successfully");
+  }
 
   return (
     <div className="flex justify-end mt-5">

@@ -25,7 +25,7 @@ export const api = createApi({
     }),
     addReview:builder.mutation({
       query:({id, data})=>({
-        url:"/reviews/",
+        url:`/reviews/${id}`,
         method:"PATCH",
         body: data
       }),
