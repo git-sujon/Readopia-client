@@ -5,6 +5,7 @@ import LoginPage from "../page/LoginPage";
 import SignUpPage from "../page/SignUpPage";
 import ErrorPage from "../page/ErrorPage";
 import BookDetails from "../page/BookDetails";
+import AddBook from "../page/AddBook";
 
 const routes = createBrowserRouter([
    {
@@ -23,6 +24,10 @@ const routes = createBrowserRouter([
       {
          path:"/SignUp",
          element:<SignUpPage></SignUpPage>
+      },
+      {
+         path:"/add-book",
+         element:<AddBook></AddBook>
       },
       {
          path:'/book-details/:_id',

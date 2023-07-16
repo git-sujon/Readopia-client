@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import StarRating from "../components/ui/StarRating";
 import { IBook } from "../types/globalTypes";
 const BookCard = ({ book }:IBook) => {
-  const { _id, title, author, genre } = book;
+  const { _id, title, author, genre, imgUrl } = book;
 
   return (
     <Link
@@ -13,7 +13,7 @@ const BookCard = ({ book }:IBook) => {
         <figure className="my-2">
           <img
             className="h-56"
-            src="https://static8.depositphotos.com/1004221/832/i/600/depositphotos_8329452-stock-photo-pile-of-books-on-a.jpg"
+            src={imgUrl}
             alt="Shoes"
           />
         </figure>

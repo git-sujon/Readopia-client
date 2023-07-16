@@ -1,12 +1,31 @@
-import { useGetSingleBooksQuery } from "../redux/api/apiSlice";
+import {
+  useDeleteBookMutation,
+  useGetSingleBookQuery,
+} from "../redux/api/apiSlice";
 import { useParams } from "react-router-dom";
 import { IBook } from "../types/globalTypes";
 import IsLoading from "../components/ui/IsLoading";
 import ConfirmationModal from "../components/ui/ConfirmationModal";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { isDelete } from "../redux/features/util/utilSlice";
+import { useEffect } from "react";
+import BookReview from "../components/BookReview";
+import PostReview from "../components/PostReview";
 
 const BookDetails = () => {
   const { _id } = useParams();
-  const { data, isLoading } = useGetSingleBooksQuery(_id);
+  const dispatch = useAppDispatch();
+  const { data, isLoading } = useGetSingleBookQuery(_id);
+
+  const demoImageUrl =
+    "https://static8.depositphotos.com/1004221/832/i/600/depositphotos_8329452-stock-photo-pile-of-books-on-a.jpg";
+
+  const { isConfirm } = useAppSelector((state) => state?.util);
+
+  const [
+    deleteBook,
+    { isError, error, status, isLoading: isLoadingForDelete },
+  ] = useDeleteBookMutation();
 
   if (isLoading) {
     return <IsLoading />;
@@ -14,33 +33,51 @@ const BookDetails = () => {
 
   const book: IBook = data?.data;
 
+  const handleDelete = async () => {
+    dispatch(isDelete());
+    console.log("isConfirm 1:", isConfirm);
+    if (isConfirm) {
+      try {
+        await deleteBook({ id: _id });
+        console.log("Book deleted successfully");
+        dispatch(isDelete());
+      } catch (error) {
+        console.log(isError, error);
+      }
+    }
 
-
-  const handleDelete = () => {
-    console.log("g");
+    console.log("isConfirm2:", isConfirm);
   };
 
   return (
     <div>
-      <ConfirmationModal />
+      <div>
+        <dialog id="my_modal_4" className="modal">
+          <form
+            method="dialog"
+            className="modal-box w-11/12 max-w-5xl bg-yellow-100"
+          >
+            <h3 className=" font-extrabold text-lg">
+              Do You want to delete this Book?
+            </h3>
+            <div className="modal-action">
+              {/* if there is a button, it will close the modal */}
+              <button className="btn btn-error" onClick={handleDelete}>
+                Ok
+              </button>
+              <button className="btn btn-success">Close</button>
+            </div>
+          </form>
+        </dialog>
+      </div>
       <div className="card lg:card-side bg-base-100 shadow-xl">
         <figure>
-          <img
-            src="https://static8.depositphotos.com/1004221/832/i/600/depositphotos_8329452-stock-photo-pile-of-books-on-a.jpg"
-            alt="Album"
-          />
+          <img className="w-60 h-80" src={book?.imgUrl} alt="Album" />
         </figure>
         <div className="card-body">
           <h2 className="card-title">{book?.title}</h2>
           {/* <p>{book?.bookDetails}</p> */}
-          <p>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt atque
-            ea eaque dolorum tenetur aliquam inventore corrupti excepturi
-            consequatur nesciunt doloribus amet tempore repellendus sint eos
-            veniam nulla, autem officia esse soluta at velit? Quisquam,
-            deleniti! Quae eaque repellendus labore doloremque itaque optio
-            consectetur. Cum, quis. Consectetur veniam rem dolorum.
-          </p>
+          <p>{book.bookDetails}</p>
           <div className="card-actions justify-end">
             <button className="btn btn-secondary">Edit Book</button>
             <button
@@ -52,6 +89,9 @@ const BookDetails = () => {
           </div>
         </div>
       </div>
+
+      <BookReview reviews={book.reviews} />
+      <PostReview/>
     </div>
   );
 };

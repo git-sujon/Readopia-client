@@ -12,8 +12,8 @@ const utilSlice = createSlice({
     name:"util",
     initialState,
     reducers:{
-        isDelete:(state, action)=> {
-            state.isConfirm = action.payload
+        isDelete:(state)=> {
+            state.isConfirm =!state.isConfirm
         }
     }
 })

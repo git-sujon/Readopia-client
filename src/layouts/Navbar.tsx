@@ -1,5 +1,5 @@
-import {Link} from 'react-router-dom' 
-import bookSvg from '../assets/book-svgrepo-com.svg'
+import { Link } from "react-router-dom";
+import bookSvg from "../assets/book-svgrepo-com.svg";
 const Navbar = () => {
   return (
     <div className="navbar bg-base-100">
@@ -26,8 +26,11 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 "
           >
             <li>
-              <Link to='/' className=" font-bold">Books</Link>
+              <Link to="/" className="text-xl font-bold">
+                Books
+              </Link>
             </li>
+
             {/* <li>
               <a>Parent</a>
               <ul className="p-2">
@@ -40,20 +43,30 @@ const Navbar = () => {
               </ul>
             </li> */}
             <li>
-              {/* <a>Item 3</a> */}
+
+              <Link to="/add-book" className=" font-bold">
+                Add Book
+              </Link>
             </li>
           </ul>
         </div>
-        <div className='flex items-center justify-center'>
-        <a className="btn btn-warning btn-outline  normal-case text-2xl font-bold text-yellow-600">Readopia  <img className='w-10 h-10 ' src={bookSvg} alt="" /></a>
-       
+        <div className="flex items-center justify-center">
+          <Link
+            to="/"
+            className="btn btn-warning btn-outline  normal-case text-2xl font-bold text-yellow-600"
+          >
+            Readopia <img className="w-10 h-10 " src={bookSvg} alt="" />
+          </Link>
         </div>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal px-1 flex items-center gap-5">
           <li>
-          <a className="text-xl font-bold">Books</a>
+            <Link to="/" className="text-lg font-bold border">
+              Books
+            </Link>
           </li>
+
           {/* <li tabIndex={0}>
             <details>
               <summary>Parent</summary>
@@ -68,12 +81,14 @@ const Navbar = () => {
             </details>
           </li> */}
           <li>
-            {/* <a>Item 3</a> */}
+            <Link to="/add-book" className="text-lg font-bold border">
+              Add Book
+            </Link>
           </li>
         </ul>
       </div>
       <div className="navbar-end">
-        <a className="btn  btn-outline btn-warning" >Login</a>
+        <a className="btn  btn-outline btn-warning">Login</a>
       </div>
     </div>
   );
