@@ -90,8 +90,8 @@ const BookDetails = () => {
         </div>
       </div>
 
-      <BookReview reviews={book.reviews} />
-      <PostReview/>
+      <BookReview id={_id} />
+      <PostReview id={_id}/>
     </div>
   );
 };
