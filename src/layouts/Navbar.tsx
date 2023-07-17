@@ -87,8 +87,9 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
-      <div className="navbar-end">
-        <a className="btn  btn-outline btn-warning">Login</a>
+      <div className="navbar-end gap-5">
+        <Link to='/login' className="btn  btn-outline btn-warning">Login</Link>
+        <Link to='/signUp' className="btn  btn-outline btn-warning">Sign up</Link>
       </div>
     </div>
   );
