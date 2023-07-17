@@ -17,6 +17,7 @@ interface IUserState {
     email: string | null;
   };
   isLoading: boolean;
+  isSuccess: boolean;
   isError: boolean;
   error: string | null | undefined;
 }
@@ -26,6 +27,7 @@ const initialState: IUserState = {
     email: null,
   },
   isLoading: false,
+  isSuccess: false,
   isError: false,
   error: null,
 };
@@ -71,46 +73,55 @@ const userSlice = createSlice({
         state.isLoading = true;
         state.isError = false;
         state.error = null;
+        state.isSuccess = false;
       })
       .addCase(createUser.fulfilled, (state, action) => {
         state.user.email = action.payload;
         state.isLoading = false;
+        state.isSuccess = true;
       })
       .addCase(createUser.rejected, (state, action) => {
         state.user.email = null;
         state.isLoading = false;
         state.isError = true;
         state.error = action.error.message;
+        state.isSuccess = false;
       })
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
         state.error = null;
+        state.isSuccess = false;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.user.email = action.payload;
         state.isLoading = false;
+        state.isSuccess = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.user.email = null;
         state.isLoading = false;
         state.isError = true;
         state.error = action.error.message;
+        state.isSuccess = false;
       })
       .addCase(createUserWithGoogle.pending, (state) => {
         state.isLoading = true;
         state.isError = false;
         state.error = null;
+        state.isSuccess = false;
       })
       .addCase(createUserWithGoogle.fulfilled, (state, action) => {
         state.user.email = action.payload;
         state.isLoading = false;
+        state.isSuccess = true;
       })
       .addCase(createUserWithGoogle.rejected, (state, action) => {
         state.user.email = null;
         state.isLoading = false;
         state.isError = true;
         state.error = action.error.message;
+        state.isSuccess = false;
       });
   },
 });
