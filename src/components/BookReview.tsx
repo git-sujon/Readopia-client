@@ -9,7 +9,7 @@ const BookReview = ({ id }) => {
   const reviews = data?.data;
 
   if (isLoading) {
-    return <IsLoading />;
+    return <div className="flex justify-end items-end"><IsLoading /></div>;
   }
 
   return (

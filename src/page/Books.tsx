@@ -5,7 +5,7 @@ import { IBook } from "../types/globalTypes";
 
 const Books = () => {
   const { data, isLoading } = useGetAllBooksQuery(undefined);
-  if(isLoading){
+  if(!data?.data?.data && isLoading){
     return <IsLoading/>
 }
   const books = data?.data?.data;

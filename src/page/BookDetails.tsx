@@ -2,7 +2,7 @@ import {
   useDeleteBookMutation,
   useGetSingleBookQuery,
 } from "../redux/api/apiSlice";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { IBook } from "../types/globalTypes";
 import IsLoading from "../components/ui/IsLoading";
 import ConfirmationModal from "../components/ui/ConfirmationModal";
@@ -17,16 +17,17 @@ const BookDetails = () => {
   const dispatch = useAppDispatch();
   const { data, isLoading } = useGetSingleBookQuery(_id);
   const [deleteBook, { error, isSuccess }] = useDeleteBookMutation();
-
+  const navigate = useNavigate();
   const { isConfirm } = useAppSelector((state) => state?.util);
 
   useEffect(() => {
     const deleteConfirmed = async () => {
       if (isConfirm) {
         try {
-          await deleteBook({ id: _id }).unwrap();
-
+          await deleteBook({ id: _id });
           toast.success("Book deleted successfully");
+
+          navigate("/");
         } catch (error) {
           console.log("Error deleting book:", error);
         } finally {
@@ -38,7 +39,7 @@ const BookDetails = () => {
     deleteConfirmed().catch((error) => {
       console.log("Error in deleteConfirmed:", error);
     });
-  }, [isConfirm, deleteBook, _id, dispatch]);
+  }, [isConfirm, deleteBook, _id, dispatch,navigate]);
   if (isLoading) {
     return <IsLoading />;
   }
@@ -61,7 +62,9 @@ const BookDetails = () => {
           {/* <p>{book?.bookDetails}</p> */}
           <p>{book.bookDetails}</p>
           <div className="card-actions justify-end">
-            <Link to={`/edit-book/${book._id}`} className="btn btn-secondary" >Edit Book</Link>
+            <Link to={`/edit-book/${book._id}`} className="btn btn-secondary">
+              Edit Book
+            </Link>
             <button
               onClick={() => window.my_modal_4.showModal()}
               className="btn btn-error"
