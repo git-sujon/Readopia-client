@@ -1,13 +1,19 @@
 import { Link } from "react-router-dom";
 import bookSvg from "../assets/book-svgrepo-com.svg";
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase/firebase.config";
+import { toast } from "react-hot-toast";
+import { setUser } from "../redux/features/user/userSlice";
 const Navbar = () => {
-
-  const {user, isLoading} = useAppSelector(state=> state.user)
-
-  console.log("user:", user.email)
-
-
+  const { user, isLoading } = useAppSelector((state) => state.user);
+  const  dispatch = useAppDispatch()
+  console.log("user:", user.email);
+  const handleLogout = async () => {
+    await signOut(auth); 
+    toast.success("LogOut successfully")
+    dispatch(setUser(null))
+  };
 
   return (
     <div className="navbar bg-base-100">
@@ -51,7 +57,6 @@ const Navbar = () => {
               </ul>
             </li> */}
             <li>
-
               <Link to="/add-book" className=" font-bold">
                 Add Book
               </Link>
@@ -96,12 +101,23 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end gap-5">
-        {
-          !user?.email ? <><Link to='/login' className="btn  btn-outline btn-warning">Login</Link>
-          <Link to='/signUp' className="btn  btn-outline btn-warning">Sign up</Link></> :  <button  className="btn  btn-outline btn-warning">Logout</button>
-        }
-        
-       
+        {!user?.email  ? (
+          <>
+            <Link to="/login" className="btn  btn-outline btn-warning">
+              Login
+            </Link>
+            <Link to="/signUp" className="btn  btn-outline btn-warning">
+              Sign up
+            </Link>
+          </>
+        ) : (
+          <button
+            className="btn  btn-outline btn-warning"
+            onClick={() => handleLogout()}
+          >
+            Logout
+          </button>
+        )}
       </div>
     </div>
   );
