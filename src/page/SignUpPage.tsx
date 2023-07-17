@@ -1,12 +1,30 @@
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { createUser } from "../redux/features/user/userSlice";
+import { updateProfile } from "firebase/auth";
+import { auth } from "../firebase/firebase.config";
 
 const SignUpPage = () => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
 
 
-  const { handleSubmit, register } = useForm();
+  const dispatch = useDispatch();
 
-  const onSubmit = (inputData) => {
-    console.log("inputData:", inputData.email);
+
+  const onSubmit = async (inputData) => {
+
+    await updateProfile(auth.currentUser, {
+      displayName: inputData.fullName,
+      photoURL: "https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg",
+    });
+
+    dispatch(
+      createUser({ email: inputData?.email, password: inputData?.password })
+    );
   };
 
   return (
@@ -16,7 +34,7 @@ const SignUpPage = () => {
         {/* Full Name */}
         <div className="form-control w-full max-w-sm">
           <label className="label">
-            <span className="label-text">Full Name</span>
+            <span className="label-text">Full Name:</span>
           </label>
           <input
             type="text"
@@ -31,10 +49,10 @@ const SignUpPage = () => {
         {/* email */}
         <div className="form-control w-full max-w-sm">
           <label className="label">
-            <span className="label-text">email</span>
+            <span className="label-text">Email:</span>
           </label>
           <input
-            type="text"
+            type="email"
             placeholder="Type here"
             className="input input-bordered w-full max-w-sm"
             {...register("email", { required: "Email is required" })}
@@ -46,7 +64,7 @@ const SignUpPage = () => {
         {/* Phone Number */}
         <div className="form-control w-full max-w-sm">
           <label className="label">
-            <span className="label-text">Phone Number</span>
+            <span className="label-text">Phone Number:</span>
           </label>
           <input
             type="text"
@@ -61,7 +79,7 @@ const SignUpPage = () => {
         {/* Password */}
         <div className="form-control w-full max-w-sm">
           <label className="label">
-            <span className="label-text">Password</span>
+            <span className="label-text">Password:</span>
           </label>
           <input
             type="text"
