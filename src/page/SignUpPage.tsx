@@ -1,22 +1,17 @@
-import { useForm } from 'react-hook-form';
+import { useForm } from "react-hook-form";
 
 const SignUpPage = () => {
 
-    const  {handleSubmit, register} = useForm()
 
-    const onSubmit = (inputData) => {
+  const { handleSubmit, register } = useForm();
 
-    console.log("inputData:", inputData.email)
+  const onSubmit = (inputData) => {
+    console.log("inputData:", inputData.email);
+  };
 
-
-    }
-
-
-
-    return (
-        <div className='flex  justify-center'>
-         <form onSubmit={handleSubmit(onSubmit)}>
-
+  return (
+    <div className="flex  justify-center">
+      <form onSubmit={handleSubmit(onSubmit)}>
         {/* """"""""""""""""  */}
         {/* Full Name */}
         <div className="form-control w-full max-w-sm">
@@ -32,8 +27,6 @@ const SignUpPage = () => {
         </div>
 
         {/* """"""""""""""""  */}
-
-
 
         {/* email */}
         <div className="form-control w-full max-w-sm">
@@ -78,14 +71,12 @@ const SignUpPage = () => {
           />
         </div>
 
-
-
         <button type="submit" className="btn btn-neutral mt-5">
           Submit
         </button>
       </form>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default SignUpPage;
