@@ -1,10 +1,27 @@
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { ICreateBook } from "../types/globalTypes";
-import { useAddBookToDBMutation } from "../redux/api/apiSlice";
-import toast from 'react-hot-toast';
-const AddBook = () => {
-  const [addBookToDB, { isLoading, isError, isSuccess, error }] =
-    useAddBookToDBMutation();
+import {
+  useGetSingleBookQuery,
+  useUpdateBookMutation,
+} from "../redux/api/apiSlice";
+import { useParams } from "react-router-dom";
+import IsLoading from "../components/ui/IsLoading";
+
+const EditBook = () => {
+  const { id } = useParams();
+
+  console.log("id:", id)
+
+
+  const [updateBook, { isError, isSuccess, error }] =
+    useUpdateBookMutation();
+
+
+  const { data, isLoading } = useGetSingleBookQuery(id);
+
+
+
 
   const {
     register,
@@ -13,8 +30,18 @@ const AddBook = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit =async (inputData: ICreateBook) => {
-    const book: ICreateBook = {
+  if (data?.data && isLoading) {
+    return <IsLoading />;
+  }
+
+  const book: ICreateBook = data?.data;
+
+
+  const onSubmit = async (inputData: Partial<ICreateBook>) => {
+
+    console.log("inputData:", inputData)
+
+    const book: Part = {
       title: inputData.title,
       author: inputData.author,
       bookDetails: inputData.bookDetails,
@@ -24,14 +51,21 @@ const AddBook = () => {
       rating: 5,
       reviews: ["A Test Auto Review"],
     };
+    const options = {
+      id: id,
+      data: { ...book },
+    };
 
+    console.log("options:", options);
 
-     await addBookToDB({ data: book });
-     reset()
+    await updateBook(options);
+
   };
   if (isSuccess) {
-    toast.success('Book add successfully');
 
+    console.log("isSuccess:", isSuccess)
+
+    toast.success("Book Updated successfully");
   }
 
   if (error) {
@@ -50,6 +84,7 @@ const AddBook = () => {
             type="text"
             placeholder="Type here"
             className="input input-bordered w-full max-w-sm"
+            defaultValue={book?.title}
             {...register("title", { required: "Email is required" })}
           />
         </div>
@@ -65,6 +100,7 @@ const AddBook = () => {
             type="text"
             placeholder="Type here"
             className="input input-bordered w-full max-w-sm"
+            defaultValue={book?.bookDetails}
             {...register("bookDetails", { required: "Need some Details" })}
           />
         </div>
@@ -79,6 +115,7 @@ const AddBook = () => {
             type="text"
             placeholder="Type here"
             className="input input-bordered w-full max-w-sm"
+            defaultValue={book?.author}
             {...register("author", { required: "Author is required" })}
           />
         </div>
@@ -94,6 +131,7 @@ const AddBook = () => {
             type="text"
             placeholder="Type here"
             className="input input-bordered w-full max-w-sm"
+            defaultValue={book?.genre}
             {...register("genre", { required: "genre is required" })}
           />
         </div>
@@ -109,6 +147,7 @@ const AddBook = () => {
             type="date"
             placeholder="Type here"
             className="input input-bordered w-full max-w-sm"
+            defaultValue={book?.publicationDate?.slice(0, 10)}
             {...register("publicationDate", {
               required: "Publication Date is required",
             })}
@@ -126,6 +165,7 @@ const AddBook = () => {
             type="text"
             placeholder="Type here"
             className="input input-bordered w-full max-w-sm"
+            defaultValue={book?.imgUrl}
             {...register("imgUrl", { required: "Image address is required" })}
           />
         </div>
@@ -140,4 +180,4 @@ const AddBook = () => {
   );
 };
 
-export default AddBook;
+export default EditBook;

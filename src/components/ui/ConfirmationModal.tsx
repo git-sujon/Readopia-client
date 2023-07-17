@@ -1,7 +1,7 @@
 import { isDelete } from "../../redux/features/util/utilSlice";
 import { useAppDispatch } from "../../redux/hooks";
 
-const ConfirmationModal = () => {
+const ConfirmationModal = ({handleDelete}) => {
 
 
 
@@ -14,7 +14,7 @@ const ConfirmationModal = () => {
           <h3 className=" font-extrabold text-lg">Do You want to delete this Book?</h3>
           <div className="modal-action">
             {/* if there is a button, it will close the modal */}
-            <button className="btn btn-error" >Ok</button>
+            <button onClick={handleDelete} className="btn btn-error" >Ok</button>
             <button className="btn btn-success">Close</button>
           </div>
         </form>

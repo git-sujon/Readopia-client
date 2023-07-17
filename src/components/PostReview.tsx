@@ -2,8 +2,6 @@ import { toast } from "react-hot-toast/headless";
 import { useAddReviewMutation } from "../redux/api/apiSlice";
 
 const PostReview = ({ id }) => {
-  console.log("id from ", id);
-
   const [addReview, { isSuccess, error }] = useAddReviewMutation();
 
   const handleReview = async (event) => {
@@ -16,6 +14,7 @@ const PostReview = ({ id }) => {
     };
 
     await addReview(options);
+    event.target.reset()
   };
 
   if (error) {
@@ -25,7 +24,7 @@ const PostReview = ({ id }) => {
   if (isSuccess) {
     console.log("isSuccess:", isSuccess);
 
-    toast("Review added successfully");
+    toast.success("Review added successfully");
   }
 
   return (
