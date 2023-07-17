@@ -1,6 +1,14 @@
 import { Link } from "react-router-dom";
 import bookSvg from "../assets/book-svgrepo-com.svg";
+import { useAppSelector } from "../redux/hooks";
 const Navbar = () => {
+
+  const {user, isLoading} = useAppSelector(state=> state.user)
+
+  console.log("user:", user.email)
+
+
+
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -88,8 +96,12 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end gap-5">
-        <Link to='/login' className="btn  btn-outline btn-warning">Login</Link>
-        <Link to='/signUp' className="btn  btn-outline btn-warning">Sign up</Link>
+        {
+          !user?.email ? <><Link to='/login' className="btn  btn-outline btn-warning">Login</Link>
+          <Link to='/signUp' className="btn  btn-outline btn-warning">Sign up</Link></> :  <button  className="btn  btn-outline btn-warning">Logout</button>
+        }
+        
+       
       </div>
     </div>
   );
