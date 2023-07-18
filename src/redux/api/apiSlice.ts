@@ -6,7 +6,7 @@ export const api = createApi({
   tagTypes: ['deleteBook','addBook', 'postReview', 'updateBook'],
   endpoints: (builder) => ({
     getAllBooks: builder.query({
-      query: () => "/books",
+      query: (searchTerm) => `/books?searchTerm=${searchTerm}`,
       providesTags: ['addBook', 'deleteBook', 'updateBook'],
     }),
     getSingleBook: builder.query({

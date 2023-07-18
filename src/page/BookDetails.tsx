@@ -50,6 +50,9 @@ const BookDetails = () => {
     dispatch(isDelete());
   };
 
+
+  const date = new Date(book.publicationDate).toLocaleDateString()
+
   return (
     <div>
       <ConfirmationModal handleDelete={handleDelete} />
@@ -58,9 +61,13 @@ const BookDetails = () => {
           <img className="w-60 h-80" src={book?.imgUrl} alt="Album" />
         </figure>
         <div className="card-body">
-          <h2 className="card-title">{book?.title}</h2>
-          {/* <p>{book?.bookDetails}</p> */}
-          <p>{book.bookDetails}</p>
+          <h2 className="card-title">Name: {book?.title}</h2>
+          <p><span className="font-bold">Author:</span> {book.author}</p>
+          <p><span className="font-bold">Genre:</span>  {book.genre}</p>
+          <p><span className="font-bold">Publication Date:</span>  {date}</p>
+
+          <p><span className="font-bold">Summary:</span>  {book.bookDetails}</p>
+     
           <div className="card-actions justify-end">
             <Link to={`/edit-book/${book._id}`} className="btn btn-secondary">
               Edit Book

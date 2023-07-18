@@ -7,7 +7,7 @@ const BookCard = ({ book }:IBook) => {
   return (
     <Link
       to={`/book-details/${_id}`}
-      className="card w-80 bg-yellow-50  shadow-xl"
+      className="card w-72 bg-yellow-50  shadow-xl"
     >
       <div className="card-body">
         <figure className="my-2">
