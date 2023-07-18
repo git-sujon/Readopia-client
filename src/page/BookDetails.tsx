@@ -7,7 +7,7 @@ import { IBook } from "../types/globalTypes";
 import IsLoading from "../components/ui/IsLoading";
 import ConfirmationModal from "../components/ui/ConfirmationModal";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { isDelete } from "../redux/features/util/utilSlice";
+import { isDelete, setFinished, setWishlist } from "../redux/features/util/utilSlice";
 import { useEffect } from "react";
 import BookReview from "../components/BookReview";
 import PostReview from "../components/PostReview";
@@ -50,12 +50,12 @@ const BookDetails = () => {
     dispatch(isDelete());
   };
 
-  const handleWishlist = () => {
-    
+  const handleWishlist = (_id) => {
+    dispatch(setWishlist(_id))
   }
 
-  const handleFinished = () => {
-
+  const handleFinished = (_id) => {
+    dispatch(setFinished(_id))
   }
 
 
@@ -77,8 +77,8 @@ const BookDetails = () => {
           <p><span className="font-bold">Summary:</span>  {book.bookDetails}</p>
      
           <div className="card-actions justify-end">
-            <button className="btn btn-success">Add to wishlist</button>
-            <button className="btn btn-warning">Finished</button>
+            <button className="btn btn-success" onClick={()=> handleWishlist(_id)}>Add to wishlist</button>
+            <button className="btn btn-warning" onClick={()=> handleFinished(_id)}>Finished</button>
             <Link to={`/edit-book/${book._id}`} className="btn btn-secondary">
               Edit Book
             </Link>
