@@ -2,10 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface IConfirm {
     isConfirm:boolean
+    wishlist:number
 }
 
 const initialState:IConfirm = {
-    isConfirm:false
+    isConfirm:false,
+    wishlist:0
 }
 
 const utilSlice = createSlice({
@@ -14,6 +16,9 @@ const utilSlice = createSlice({
     reducers:{
         isDelete:(state)=> {
             state.isConfirm =!state.isConfirm
+        },
+        setWishlist:(state, action) => {
+            state.wishlist = action.payload + 1
         }
     }
 })

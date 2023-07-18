@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { createUserWithGoogle, loginUser } from "../redux/features/user/userSlice";
 import { toast } from "react-hot-toast";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const {
@@ -18,7 +19,8 @@ const LoginPage = () => {
 
 
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
+  
   interface IUserLogin {
     email: string;
     password: string;
@@ -39,6 +41,7 @@ const LoginPage = () => {
       console.log(user?.email);
       toast.success("Login successfully");
       reset();
+      navigate('/')
     }
   }, [user?.email, isLoading]);
 

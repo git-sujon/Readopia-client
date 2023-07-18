@@ -50,6 +50,14 @@ const BookDetails = () => {
     dispatch(isDelete());
   };
 
+  const handleWishlist = () => {
+    
+  }
+
+  const handleFinished = () => {
+
+  }
+
 
   const date = new Date(book.publicationDate).toLocaleDateString()
 
@@ -69,6 +77,8 @@ const BookDetails = () => {
           <p><span className="font-bold">Summary:</span>  {book.bookDetails}</p>
      
           <div className="card-actions justify-end">
+            <button className="btn btn-success">Add to wishlist</button>
+            <button className="btn btn-warning">Finished</button>
             <Link to={`/edit-book/${book._id}`} className="btn btn-secondary">
               Edit Book
             </Link>

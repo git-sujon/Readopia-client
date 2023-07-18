@@ -74,6 +74,18 @@ const SearchFilter = () => {
                 />
               </label>
             </div>
+            <div className="form-control">
+              <label className="label cursor-pointer">
+                <span className="label-text font-semibold ">Publication Date</span>
+                <input
+                  type="radio"
+                  name="searchTerm"
+                  value="genre"
+                  className="radio checked:bg-blue-500"
+                  // onChange={handleFilterFields}
+                />
+              </label>
+            </div>
           </div>
         </div>
       </div>
