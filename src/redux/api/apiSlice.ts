@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/v1/" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://readopia-server-git-sujon.vercel.app/api/v1/" }),
   tagTypes: ['deleteBook','addBook', 'postReview', 'updateBook'],
   endpoints: (builder) => ({
     getAllBooks: builder.query({
