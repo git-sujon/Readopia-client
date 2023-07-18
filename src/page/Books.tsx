@@ -2,10 +2,23 @@ import BookCard from "../components/BookCard";
 import SearchFilter from "../components/SearchFilter";
 import IsLoading from "../components/ui/IsLoading";
 import { useGetAllBooksQuery } from "../redux/api/apiSlice";
+import { useAppSelector } from "../redux/hooks";
 import { IBook } from "../types/globalTypes";
 
 const Books = () => {
-  const { data, isLoading } = useGetAllBooksQuery("gone");
+
+  let {searchTerm,searchValue} = useAppSelector(state => state.book)
+
+  console.log("searchValue:", searchValue)
+
+
+  console.log("searchTerm:", searchTerm)
+
+  if(!searchValue){
+    searchTerm="searchTerm"
+  }
+
+  const { data, isLoading } = useGetAllBooksQuery({searchTerm, searchValue});
   if (!data?.data?.data && isLoading) {
     return <IsLoading />;
   }

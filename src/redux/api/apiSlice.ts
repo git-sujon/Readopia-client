@@ -1,12 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/v1/" }),
   tagTypes: ['deleteBook','addBook', 'postReview', 'updateBook'],
   endpoints: (builder) => ({
     getAllBooks: builder.query({
-      query: (searchTerm) => `/books?searchTerm=${searchTerm}`,
+      query: ({searchTerm, searchValue}) => `/books?${searchTerm}=${searchValue}`,
       providesTags: ['addBook', 'deleteBook', 'updateBook'],
     }),
     getSingleBook: builder.query({
