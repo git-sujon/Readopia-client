@@ -1,5 +1,5 @@
 import IsLoading from "../components/ui/IsLoading";
-import WishlistCard from "../components/ui/WishlistCard";
+import WishlistAndFinishedCard from "../components/ui/WishlistAndFinishedCard";
 import { useGetSingleUserQuery } from "../redux/api/apiSlice";
 import { useAppSelector } from "../redux/hooks";
 import { IUser } from "../types/globalTypes";
@@ -27,8 +27,8 @@ const MyProfile = () => {
   return (
     <div>
       {/* user info  */}
-      <div className="">
-        <div className="mr-3">
+      <div className="flex items-center justify-center gap-x-10 border max-w-lg mx-auto  p-10 bg-yellow-100 rounded-lg">
+        <div className="">
           <img
             className="object-cover w-16 h-16 rounded-full ring ring-gray-300 dark:ring-gray-600"
             src={photoUrl}
@@ -43,10 +43,19 @@ const MyProfile = () => {
       </div>
 
       <div className="py-20">
-        <h2 className="font-bold text-xl mb-10">Wishlist</h2>
+        <h2 className="font-bold text-xl mb-10">Your Wishlist Books:</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 ">
           {profile?.wishlist?.map((id:string) => (
-            <WishlistCard id={id} />
+            <WishlistAndFinishedCard id={id} />
+          ))}
+        </div>
+      </div>
+
+      <div className="py-20">
+        <h2 className="font-bold text-xl mb-10">Your Reading Finished Books:</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 ">
+          {profile?.finishedBook?.map((id:string) => (
+            <WishlistAndFinishedCard id={id} />
           ))}
         </div>
       </div>

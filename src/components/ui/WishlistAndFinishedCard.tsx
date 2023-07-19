@@ -39,7 +39,7 @@ const WishlistCard = ({ id }:string) => {
             <StarRating />
             <p className="mb-0 font-black">{book?.rating}</p>
           </div>
-          <button className="btn btn-warning" onClick={handleDelete()}>Delete</button>
+          <button className="btn btn-warning btn-sm" onClick={handleDelete()}>Delete</button>
         </div>
       </div>
     </Link>
