@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Link } from "react-router-dom";
 import bookSvg from "../assets/book-svgrepo-com.svg";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -6,10 +7,10 @@ import { auth } from "../firebase/firebase.config";
 import { toast } from "react-hot-toast";
 import { setUser } from "../redux/features/user/userSlice";
 const Navbar = () => {
-  const { user, isLoading } = useAppSelector((state) => state.user);
+  const { user} = useAppSelector((state) => state.user);
   const  dispatch = useAppDispatch()
   console.log("user:", user.email);
-  const handleLogout = async () => {
+  const handleLogout = async ():Promise<void> => {
     await signOut(auth); 
     toast.success("LogOut successfully")
     dispatch(setUser(null))
@@ -42,6 +43,11 @@ const Navbar = () => {
             <li>
               <Link to="/" className="text-xl font-bold">
                 Books
+              </Link>
+            </li>
+            <li>
+              <Link to="/my-profile" className="text-xl font-bold">
+                My Profile
               </Link>
             </li>
 
@@ -79,6 +85,12 @@ const Navbar = () => {
               Books
             </Link>
           </li>
+          <li>
+              <Link to="/my-profile" className="text-xl font-bold">
+                My Profile
+              </Link>
+            </li>
+
 
           {/* <li tabIndex={0}>
             <details>

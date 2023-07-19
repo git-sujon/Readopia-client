@@ -23,3 +23,20 @@ export interface ICreateBook {
 }
 
  
+
+export interface IUser   {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  wishlist?: string[];
+  finishedBook?: string[]
+  addedBook?: string[]
+  givenReviews?: {
+    bookId: string
+    reviews: string[];
+  }[];
+  givenRating?: {
+    bookId: string
+    rating: number;
+  }[];
+}
