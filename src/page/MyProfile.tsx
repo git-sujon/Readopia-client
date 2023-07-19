@@ -5,28 +5,21 @@ import { useAppSelector } from "../redux/hooks";
 import { IUser } from "../types/globalTypes";
 
 const MyProfile = () => {
-  const { user, isLoading } = useAppSelector((state) => state.user);
+  const { user } = useAppSelector((state) => state.user);
 
-  const { data } = useGetSingleUserQuery(user?.email);
+  const { data,isLoading } = useGetSingleUserQuery(user?.email);
 
-  if (isLoading && data) {
+  if (isLoading && !data) {
     return <IsLoading />;
   }
 
-  const profile: IUser = data?.data;
+  const profile = data?.data;
 
-  const {
-    name,
-    email,
-    phoneNumber,
-    addedBook,
-    finishedBook,
-    givenRating,
-    givenReviews,
-    wishlist,
-  } = profile;
+  console.log("profile:", profile)
 
-  console.log("profile:", profile);
+
+  
+
 
   const photoUrl =
     "https://static.vecteezy.com/system/resources/previews/009/398/577/original/man-avatar-clipart-illustration-free-png.png";
@@ -43,16 +36,16 @@ const MyProfile = () => {
           />
         </div>
         <div className="mt-5">
-          <h3 className="font-bold ">Name: {name}</h3>
-          <h3 className="font-bold ">Phone: {phoneNumber}</h3>
-          <h3 className="font-bold ">Email: {email}</h3>
+          <h3 className="font-bold ">Name: {profile?.name}</h3>
+          <h3 className="font-bold ">Phone: {profile?.phoneNumber}</h3>
+          <h3 className="font-bold ">Email: {profile?.email}</h3>
         </div>
       </div>
 
       <div className="py-20">
         <h2 className="font-bold text-xl mb-10">Wishlist</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 ">
-          {wishlist?.map((id) => (
+          {profile?.wishlist?.map((id:string) => (
             <WishlistCard id={id} />
           ))}
         </div>

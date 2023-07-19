@@ -7,13 +7,13 @@ import { auth } from "../firebase/firebase.config";
 import { toast } from "react-hot-toast";
 import { setUser } from "../redux/features/user/userSlice";
 const Navbar = () => {
-  const { user} = useAppSelector((state) => state.user);
-  const  dispatch = useAppDispatch()
+  const { user } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
   console.log("user:", user.email);
-  const handleLogout = async ():Promise<void> => {
-    await signOut(auth); 
-    toast.success("LogOut successfully")
-    dispatch(setUser(null))
+  const handleLogout = async (): Promise<void> => {
+    await signOut(auth);
+    toast.success("LogOut successfully");
+    dispatch(setUser(null));
   };
 
   return (
@@ -85,12 +85,15 @@ const Navbar = () => {
               Books
             </Link>
           </li>
-          <li>
-              <Link to="/my-profile" className="text-xl font-bold">
-                My Profile
-              </Link>
-            </li>
-
+          {user?.email && (
+            <>
+              <li>
+                <Link to="/my-profile" className="text-xl font-bold">
+                  My Profile
+                </Link>
+              </li>
+            </>
+          )}
 
           {/* <li tabIndex={0}>
             <details>
@@ -113,7 +116,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end gap-5">
-        {!user?.email  ? (
+        {!user?.email ? (
           <>
             <Link to="/login" className="btn  btn-outline btn-warning">
               Login
