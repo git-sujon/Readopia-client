@@ -67,6 +67,34 @@ export const api = createApi({
     getSingleUser: builder.query({
       query: (email: string) => `/users/${email}`,
     }),
+    addToWishlist: builder.mutation({
+      query:({email, wishlist}) => ({
+        url:`/users/add-to-wishlist/${email}`,
+        method:'PATCH',
+        body:wishlist
+      })
+    }),
+    deleteFromWishlist: builder.mutation({
+      query:({email}) => ({
+        url:`/users/add-to-wishlist/${email}`,
+        method:'DELETE',
+        
+      })
+    }),
+    addToFinishedList: builder.mutation({
+      query:({email, finishedBook}) => ({
+        url:`/users/add-to-finishedList/${email}`,
+        method:'PATCH',
+        body:finishedBook
+      })
+    }),
+    deleteFromFinishedList: builder.mutation({
+      query:({email}) => ({
+        url:`/users/add-to-finishedList/${email}`,
+        method:'DELETE',
+        
+      })
+    }),
   }),
 });
 
@@ -80,4 +108,8 @@ export const {
   useUpdateBookMutation,
   useCreateUserMutation,
   useGetSingleUserQuery,
+  useAddToWishlistMutation,
+  useDeleteFromWishlistMutation,
+  useAddToFinishedListMutation,
+  useDeleteFromFinishedListMutation
 } = api;

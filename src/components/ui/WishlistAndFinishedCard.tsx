@@ -4,29 +4,22 @@ import { IBook } from "../../types/globalTypes";
 import StarRating from "./StarRating";
 import IsLoading from "./IsLoading";
 
-const WishlistCard = ({ id }:string) => {
+const WishlistCard = ({ id }: string) => {
+  const { data, isLoading } = useGetSingleBookQuery(id);
 
-  const { data, isLoading} = useGetSingleBookQuery(id);
-
-  if(isLoading && !data){
-    <IsLoading/>
+  if (isLoading && !data) {
+    <IsLoading />;
   }
   const book: IBook = data?.data;
 
-  console.log("book:", book)
 
 
-
-
-  const handleDelete = async() => {
-    console.log("delete")
-  }
+  const handleDelete = () => {
+    console.log("first")
+  };
 
   return (
-    <Link
-      to={`/book-details/${book?._id}`}
-      className="card w-96  shadow-xl image-full"
-    >
+    <div className="card w-96  shadow-xl image-full">
       <figure className="h-60">
         <img className="w-full bg-cover" src={book?.imgUrl} alt={book?.title} />
       </figure>
@@ -39,10 +32,15 @@ const WishlistCard = ({ id }:string) => {
             <StarRating />
             <p className="mb-0 font-black">{book?.rating}</p>
           </div>
-          <button className="btn btn-warning btn-sm" onClick={handleDelete()}>Delete</button>
+          <Link to={`/book-details/${book?._id}`}  className="btn btn-warning btn-sm" >
+            Details
+          </Link>
+          <button className="btn btn-warning btn-sm" onClick={handleDelete()}>
+            Delete
+          </button>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 
