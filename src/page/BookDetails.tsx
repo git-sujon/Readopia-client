@@ -1,4 +1,6 @@
 import {
+  useAddToFinishedListMutation,
+  useAddToWishlistMutation,
   useDeleteBookMutation,
   useGetSingleBookQuery,
 } from "../redux/api/apiSlice";
@@ -7,19 +9,20 @@ import { IBook } from "../types/globalTypes";
 import IsLoading from "../components/ui/IsLoading";
 import ConfirmationModal from "../components/ui/ConfirmationModal";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { isDelete, setFinished, setWishlist } from "../redux/features/util/utilSlice";
+import { isDelete } from "../redux/features/util/utilSlice";
 import { useEffect } from "react";
 import BookReview from "../components/BookReview";
 import PostReview from "../components/PostReview";
 import toast from "react-hot-toast";
 const BookDetails = () => {
   const { _id } = useParams();
-  const dispatch = useAppDispatch();
   const { data, isLoading } = useGetSingleBookQuery(_id);
   const [deleteBook, { error, isSuccess }] = useDeleteBookMutation();
   const navigate = useNavigate();
   const { isConfirm } = useAppSelector((state) => state?.util);
-
+  const {user} = useAppSelector(state => state?.user)
+  const [addToWishlist] = useAddToWishlistMutation;
+  const [addToFinishedList] = useAddToFinishedListMutation;
   useEffect(() => {
     const deleteConfirmed = async () => {
       if (isConfirm) {
@@ -39,7 +42,7 @@ const BookDetails = () => {
     deleteConfirmed().catch((error) => {
       console.log("Error in deleteConfirmed:", error);
     });
-  }, [isConfirm, deleteBook, _id, dispatch,navigate]);
+  }, [isConfirm, deleteBook, _id, dispatch, navigate]);
   if (isLoading) {
     return <IsLoading />;
   }
@@ -47,19 +50,11 @@ const BookDetails = () => {
   const book: IBook = data?.data;
 
   const handleDelete = () => {
+    
     dispatch(isDelete());
   };
 
-  const handleWishlist = (_id) => {
-    dispatch(setWishlist(_id))
-  }
-
-  const handleFinished = (_id) => {
-    dispatch(setFinished(_id))
-  }
-
-
-  const date = new Date(book.publicationDate).toLocaleDateString()
+  const date = new Date(book.publicationDate).toLocaleDateString();
 
   return (
     <div>
@@ -70,15 +65,33 @@ const BookDetails = () => {
         </figure>
         <div className="card-body">
           <h2 className="card-title">Name: {book?.title}</h2>
-          <p><span className="font-bold">Author:</span> {book.author}</p>
-          <p><span className="font-bold">Genre:</span>  {book.genre}</p>
-          <p><span className="font-bold">Publication Date:</span>  {date}</p>
+          <p>
+            <span className="font-bold">Author:</span> {book.author}
+          </p>
+          <p>
+            <span className="font-bold">Genre:</span> {book.genre}
+          </p>
+          <p>
+            <span className="font-bold">Publication Date:</span> {date}
+          </p>
 
-          <p><span className="font-bold">Summary:</span>  {book.bookDetails}</p>
-     
+          <p>
+            <span className="font-bold">Summary:</span> {book.bookDetails}
+          </p>
+
           <div className="card-actions justify-end">
-            <button className="btn btn-success" onClick={()=> handleWishlist(_id)}>Add to wishlist</button>
-            <button className="btn btn-warning" onClick={()=> handleFinished(_id)}>Finished</button>
+            <button
+              className="btn btn-success"
+              onClick={() => handleWishlist()}
+            >
+              Add to wishlist
+            </button>
+            <button
+              className="btn btn-warning"
+              onClick={() => handleFinished()}
+            >
+              Finished
+            </button>
             <Link to={`/edit-book/${book._id}`} className="btn btn-secondary">
               Edit Book
             </Link>

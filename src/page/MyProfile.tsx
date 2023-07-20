@@ -2,21 +2,18 @@ import IsLoading from "../components/ui/IsLoading";
 import WishlistAndFinishedCard from "../components/ui/WishlistAndFinishedCard";
 import { useGetSingleUserQuery } from "../redux/api/apiSlice";
 import { useAppSelector } from "../redux/hooks";
-import { IUser } from "../types/globalTypes";
 
 const MyProfile = () => {
   const { user } = useAppSelector((state) => state.user);
 
   const { data,isLoading } = useGetSingleUserQuery(user?.email);
 
+
   if (isLoading && !data) {
     return <IsLoading />;
   }
 
   const profile = data?.data;
-
-  console.log("profile:", profile)
-
 
   
 
@@ -46,7 +43,7 @@ const MyProfile = () => {
         <h2 className="font-bold text-xl mb-10">Your Wishlist Books:</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 ">
           {profile?.wishlist?.map((id:string) => (
-            <WishlistAndFinishedCard id={id} />
+            <WishlistAndFinishedCard wishListId={id} email={profile?.email} />
           ))}
         </div>
       </div>
@@ -55,7 +52,7 @@ const MyProfile = () => {
         <h2 className="font-bold text-xl mb-10">Your Reading Finished Books:</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 ">
           {profile?.finishedBook?.map((id:string) => (
-            <WishlistAndFinishedCard id={id} />
+            <WishlistAndFinishedCard finishedListId={id}  email={profile?.email}  />
           ))}
         </div>
       </div>

@@ -1,21 +1,51 @@
 import { Link } from "react-router-dom";
-import { useGetSingleBookQuery } from "../../redux/api/apiSlice";
+import {
+  useAddToWishlistMutation,
+  useDeleteFromFinishedListMutation,
+  useDeleteFromWishlistMutation,
+  useGetSingleBookQuery,
+} from "../../redux/api/apiSlice";
 import { IBook } from "../../types/globalTypes";
 import StarRating from "./StarRating";
 import IsLoading from "./IsLoading";
+import { toast } from "react-hot-toast";
 
-const WishlistCard = ({ id }: string) => {
+const WishlistAndFinishedCard = ({ wishListId, finishedListId, email }) => {
+  let id = null;
+  if (wishListId) {
+    id = wishListId;
+  }
+  if (finishedListId) {
+    id = finishedListId;
+  }
+
   const { data, isLoading } = useGetSingleBookQuery(id);
+
+  const [deleteFromWishlist] = useDeleteFromWishlistMutation();
+  const [deleteFromFinishedList] = useDeleteFromFinishedListMutation();
 
   if (isLoading && !data) {
     <IsLoading />;
   }
   const book: IBook = data?.data;
 
-
-
-  const handleDelete = () => {
-    console.log("first")
+  const handleDelete = async () => {
+    const wishlistOptions = {
+      email,
+      data: { wishlist: wishListId },
+    };
+    const finishedBookOptions = {
+      email,
+      data: { finishedBook: finishedListId },
+    };
+    if (wishListId) {
+      await deleteFromWishlist(wishlistOptions);
+      toast.success("Book deleted from wishlist")
+    }
+    if (finishedListId) {
+      await deleteFromFinishedList(finishedBookOptions);
+      toast.success("Book deleted from Finished List")
+    }
   };
 
   return (
@@ -32,10 +62,16 @@ const WishlistCard = ({ id }: string) => {
             <StarRating />
             <p className="mb-0 font-black">{book?.rating}</p>
           </div>
-          <Link to={`/book-details/${book?._id}`}  className="btn btn-warning btn-sm" >
+          <Link
+            to={`/book-details/${book?._id}`}
+            className="btn btn-warning btn-sm"
+          >
             Details
           </Link>
-          <button className="btn btn-warning btn-sm" onClick={handleDelete()}>
+          <button
+            className="btn btn-warning btn-sm"
+            onClick={() => handleDelete()}
+          >
             Delete
           </button>
         </div>
@@ -44,4 +80,4 @@ const WishlistCard = ({ id }: string) => {
   );
 };
 
-export default WishlistCard;
+export default WishlistAndFinishedCard;

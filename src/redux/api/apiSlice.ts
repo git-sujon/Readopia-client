@@ -10,7 +10,14 @@ interface IGetAllBooksQuery {
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/v1/" }),
-  tagTypes: ["deleteBook", "addBook", "postReview", "updateBook"],
+  tagTypes: [
+    "deleteBook",
+    "addBook",
+    "postReview",
+    "updateBook",
+    "wishlist",
+    "finishedList",
+  ],
   endpoints: (builder) => ({
     getAllBooks: builder.query({
       query: ({ searchTerm, searchValue }: IGetAllBooksQuery) =>
@@ -66,34 +73,39 @@ export const api = createApi({
     }),
     getSingleUser: builder.query({
       query: (email: string) => `/users/${email}`,
+      providesTags: ["wishlist", "finishedList"],
     }),
     addToWishlist: builder.mutation({
-      query:({email, wishlist}) => ({
-        url:`/users/add-to-wishlist/${email}`,
-        method:'PATCH',
-        body:wishlist
-      })
+      query: ({ email, data }) => ({
+        url: `/users/add-to-wishlist/${email}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["wishlist"],
     }),
     deleteFromWishlist: builder.mutation({
-      query:({email}) => ({
-        url:`/users/add-to-wishlist/${email}`,
-        method:'DELETE',
-        
-      })
+      query: ({ email, data }) => ({
+        url: `/users/delete-from-wishlist/${email}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["wishlist"],
     }),
     addToFinishedList: builder.mutation({
-      query:({email, finishedBook}) => ({
-        url:`/users/add-to-finishedList/${email}`,
-        method:'PATCH',
-        body:finishedBook
-      })
+      query: ({ email, data }) => ({
+        url: `/users/add-to-finishedList/${email}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["finishedList"],
     }),
     deleteFromFinishedList: builder.mutation({
-      query:({email}) => ({
-        url:`/users/add-to-finishedList/${email}`,
-        method:'DELETE',
-        
-      })
+      query: ({ email, data }) => ({
+        url: `/users/delete-from-finishedList/${email}`,
+        method: "PATCH",
+        body:data
+      }),
+      invalidatesTags: ["finishedList"],
     }),
   }),
 });
@@ -111,5 +123,5 @@ export const {
   useAddToWishlistMutation,
   useDeleteFromWishlistMutation,
   useAddToFinishedListMutation,
-  useDeleteFromFinishedListMutation
+  useDeleteFromFinishedListMutation,
 } = api;
